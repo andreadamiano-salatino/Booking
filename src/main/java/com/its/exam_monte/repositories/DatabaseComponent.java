@@ -138,29 +138,20 @@ public class DatabaseComponent {
         return idInserito;
     }
 
-    public int insertRistoranteAndGetId(Ristorante ristorante) {
-        int idInserito = -1;
+    public int GetClienteId(String email) {
         PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int idCliente = 0;
         try {
-            String sql = "INSERT INTO reservation.ristoranti (nome, indirizzo) " +
-                    "VALUES (?, ?)";
+            String sql = "SELECT idCliente FROM reservation.clienti WHERE clienti.email = ?";
             connection = GetConnection();
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, ristorante.getNome());
-            preparedStatement.setString(2, ristorante.getIndirizzo());
+            preparedStatement.setString(1, email);
 
-            int affectedRows = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.executeQuery();
 
-            if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    idInserito = generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
-                }
+            while (resultSet.next()) {
+                idCliente = resultSet.getInt("idCliente");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,20 +164,50 @@ public class DatabaseComponent {
                 }
             }
         }
-        return idInserito;
+        return idCliente;
+    }
+    public int GetRistoranteId(String nomeRistorante) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int idRistorante = 0;
+        try {
+            String sql = "SELECT idRistorante FROM reservation.ristoranti WHERE ristoranti.nome = ?";
+            connection = GetConnection();
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, nomeRistorante);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                idRistorante = resultSet.getInt("idRistorante");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return idRistorante;
     }
 
     public int insertPrenotazioneAndGetId(Prenotazione prenotazione) {
         int idInserito = -1;
         PreparedStatement preparedStatement = null;
         try {
-            String sql = "INSERT INTO reservation.prenotazioni (note, data, coperti) " +
-                    "VALUES (?, ?, ?)";
+            String sql = "INSERT INTO reservation.prenotazioni (note, data, coperti, idRistorante, idCliente) " +
+                    "VALUES (?, ?, ?, ?, ?)";
             connection = GetConnection();
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, prenotazione.getNote());
             preparedStatement.setDate(2, java.sql.Date.valueOf(prenotazione.getData().toLocalDate()));
             preparedStatement.setInt(3, prenotazione.getCoperti());
+            preparedStatement.setInt(4, prenotazione.getIdRistorante());
+            preparedStatement.setInt(5, prenotazione.getIdCliente());
 
             int affectedRows = preparedStatement.executeUpdate();
 

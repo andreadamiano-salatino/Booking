@@ -22,6 +22,8 @@ public class bookController {
     Cliente cliente = new Cliente();
     Prenotazione prenotazione = new Prenotazione();
 
+    Ristorante ristorante;
+
     @Autowired
     DatabaseComponent db;
 
@@ -48,17 +50,25 @@ public class bookController {
         LocalDateTime dataInizio = LocalDate.parse(userFormData.get("data-inizio").get(0),formatter).atStartOfDay();
         LocalDateTime dataFine = LocalDate.parse(userFormData.get("data-fine").get(0),formatter).atStartOfDay();
 
-        cliente.setNome(nome);
-        cliente.setCognome(cognome);
-        cliente.setEmail(email);
-        cliente.setCellulare(telefono);
+        //cliente.setNome(nome);
+        //cliente.setCognome(cognome);
+        //cliente.setEmail(email);
+        //cliente.setCellulare(telefono);
 
+        //prenotazione.setNote(note);
+        //Ristorante ristoranteOgg = new Ristorante();
+        //ristoranteOgg.setNome(ristorante);
+        //prenotazione.setRistorante(ristoranteOgg);
+        //prenotazione.setCoperti(coperti);
+        //prenotazione.setCliente(cliente);
+
+        int idRistorante = db.GetRistoranteId(ristorante);
         prenotazione.setNote(note);
-        Ristorante ristoranteOgg = new Ristorante();
-        ristoranteOgg.setNome(ristorante);
-        prenotazione.setRistorante(ristoranteOgg);
         prenotazione.setCoperti(coperti);
-        prenotazione.setCliente(cliente);
+        prenotazione.setIdRistorante(idRistorante);
+
+        int idCliente = db.GetClienteId(email);
+        prenotazione.setIdCliente(idCliente);
 
         ModelAndView modelAndView = new ModelAndView("date");
         List<String> date = new ArrayList<>();
@@ -85,8 +95,6 @@ public class bookController {
         LocalDateTime data = LocalDateTime.parse(userFormData.get("date-time").get(0));
         prenotazione.setData(data);
 
-        int idCliente = db.insertClienteAndGetId(cliente);
-        //int idRistorante = db.insertRistoranteAndGetId(ristorante);
         int idPrenotazione = db.insertPrenotazioneAndGetId(prenotazione);
         //db.savePrenotazione;
 

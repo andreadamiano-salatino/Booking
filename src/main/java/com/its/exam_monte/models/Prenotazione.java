@@ -6,18 +6,20 @@ public class Prenotazione  {
     private String note;
     private LocalDateTime data;
     private int coperti;
-    private Ristorante ristorante;
-    private Cliente cliente;
+    private int idRistorante;
+    private int idCliente;
 
-    public Prenotazione(String note, LocalDateTime data, int coperti, Ristorante ristorante, Cliente cliente) {
+
+
+    public Prenotazione(){}
+
+    public Prenotazione(String note, LocalDateTime data, int coperti, int idRistorante, int idCliente) {
         this.note = note;
         this.data = data;
         this.coperti = coperti;
-        this.ristorante = ristorante;
-        this.cliente = cliente;
+        this.idRistorante = idRistorante;
+        this.idCliente = idCliente;
     }
-
-    public Prenotazione(){}
 
 
     public String getNote() {
@@ -44,19 +46,21 @@ public class Prenotazione  {
         this.coperti = coperti;
     }
 
-    public Ristorante getRistorante() {
-        return ristorante;
+    public int getIdRistorante() {
+        return idRistorante;
     }
 
-    public void setRistorante(Ristorante ristorante) {
-        this.ristorante = ristorante;
+    public void setIdRistorante(int idRistorante) {
+        this.idRistorante = idRistorante;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
+
+
 }

@@ -13,12 +13,6 @@ import java.util.ArrayList;
 @RestController
 public class initController {
 
-    /*@RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView welcome(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("prenotazione.html");
-        return modelAndView;
-    }*/
     @GetMapping("/init")
     public String init(){
         ArrayList<Chef> chefs = new ArrayList<Chef>();
@@ -42,8 +36,6 @@ public class initController {
 
         ristoranti.add(ristorante1);
         ristoranti.add(ristorante2);
-
-
 
         return "init";
     }
