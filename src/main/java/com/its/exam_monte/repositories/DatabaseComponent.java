@@ -91,9 +91,22 @@ public class DatabaseComponent {
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            if(!connection.isClosed()){
+                resultSet.close();
+                preparedStatement.close();
+            }
+            if (preparedStatement != null) {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        resultSet.close();
-        preparedStatement.close();
+        //resultSet.close();
+        //preparedStatement.close();
         return dates;
     }
 
