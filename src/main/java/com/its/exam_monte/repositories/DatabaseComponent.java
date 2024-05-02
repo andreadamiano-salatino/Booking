@@ -217,7 +217,11 @@ public class DatabaseComponent {
             connection = GetConnection();
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, prenotazione.getNote());
-            preparedStatement.setDate(2, java.sql.Date.valueOf(prenotazione.getData().toLocalDate()));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = prenotazione.getData().format(formatter);
+
+            preparedStatement.setDate(2, Date.valueOf(formattedDateTime));
             preparedStatement.setInt(3, prenotazione.getCoperti());
             preparedStatement.setInt(4, prenotazione.getIdRistorante());
             preparedStatement.setInt(5, prenotazione.getIdCliente());

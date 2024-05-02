@@ -92,6 +92,8 @@ public class bookController {
 
     @PostMapping("/finalizzaPrenotazione")
     public ModelAndView finalizzaPrenotazione(@RequestBody MultiValueMap<String, String> userFormData){
+
+
         LocalDateTime data = LocalDateTime.parse(userFormData.get("date-time").get(0));
         prenotazione.setData(data);
 
